@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("API REST de productos funcionando correctamente");
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.get('/hola', (req, res) =>{
