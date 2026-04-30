@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Productos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      color: #333;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+      background-color: white;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    button {
+      padding: 10px 20px;
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Lista de Productos</h1>
+
+  <button onclick="cargarProductos()">Cargar productos</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Stock</th>
+      </tr>
+    </thead>
+    <tbody id="tablaProductos">
+      <!-- Los productos se cargarán aquí -->
+    </tbody>
+  </table>
+
+  <script>
+    function cargarProductos() {
+      fetch("http://localhost:3000/api/productos")
+        .then((response) => {
+          if (!response.ok) throw new Error("Error en la respuesta de la red");
+          return response.json();
+        })
+        .then((data) => {
+          const tabla = document.getElementById("tablaProductos");
+          tabla.innerHTML = ""; // Limpiar tabla antes de cargar
+          
+          data.forEach((producto) => {
+            const fila = `
+              <tr>
+                <td>${producto.id}</td>
+                <td>${producto.nombre}</td>
+                <td>S/ ${producto.precio}</td>
+                <td>${producto.stock}</td>
+              </tr>
+            `;
+            tabla.innerHTML += fila;
+          });
+        })
+        .catch((error) => {
+          console.error("Error al consumir la API:", error);
+          alert("No se pudo conectar con el backend. Asegúrate de que el servidor esté corriendo.");
+        });
+    }
+  </script>
+
+</body>
+</html>
